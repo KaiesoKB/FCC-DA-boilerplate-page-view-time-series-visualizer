@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 import seaborn as sns
+import calendar
 from pandas.plotting import register_matplotlib_converters
 register_matplotlib_converters()
 
@@ -62,12 +63,28 @@ def draw_bar_plot():
     fig.savefig('bar_plot.png')
     return fig
 
+df_box = df.copy()
+df_box.reset_index(inplace=True)
+df_box['year'] = [d.year for d in df_box.date]
+df_box['month'] = [d.strftime('%b') for d in df_box.date]
+
+# Draw box plots (using Seaborn)
+month_order = list(calendar.month_abbr)[1:]
+fig, ax = plt.subplots(figsize = (10, 6))
+sns.boxplot(x='month', y='value', hue='month', data=df_box, order=month_order, palette="colorblind", legend=False, ax=ax)
+ax.set_title("Month-wise Box Plot (Seasonaility)")
+ax.set_ylabel("Page Views")
+ax.set_xlabel("Month")
+if ax.legend_ is not None:
+    ax.legend_.remove()
+fig.savefig('testBoxPlot.png')
+
 def draw_box_plot():
     # Prepare data for box plots (this part is done!)
     df_box = df.copy()
-    df_box.reset_index(inplace=True)
-    df_box['year'] = [d.year for d in df_box.date]
-    df_box['month'] = [d.strftime('%b') for d in df_box.date]
+    # df_box.reset_index(inplace=True)
+    # df_box['year'] = [d.year for d in df_box.date]
+    # df_box['month'] = [d.strftime('%b') for d in df_box.date]
 
     # Draw box plots (using Seaborn)
 
